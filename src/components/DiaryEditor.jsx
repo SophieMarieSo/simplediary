@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 export default function DiaryEditor() {
   const [state, setState] = useState({
@@ -8,6 +8,9 @@ export default function DiaryEditor() {
   });
   const { author, content, emotion } = state;
 
+  const authorInput = useRef();
+  const contentInput = useRef();
+
   const handleChangeState = (e) => {
     const { name, value } = e.target;
     setState({ ...state, [name]: value });
@@ -15,6 +18,14 @@ export default function DiaryEditor() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (author.length < 1) {
+      authorInput.current.focus();
+      return;
+    }
+    if (content.length < 5) {
+      contentInput.current.focus();
+      return;
+    }
     alert('SUCCESS');
     setState({ author: '', content: '', emotion: 1 });
   };
@@ -24,6 +35,7 @@ export default function DiaryEditor() {
       <h2>오늘의 일기</h2>
       <div>
         <input
+          ref={authorInput}
           name='author'
           type='text'
           value={author}
@@ -32,6 +44,7 @@ export default function DiaryEditor() {
       </div>
       <div>
         <textarea
+          ref={contentInput}
           name='content'
           cols='30'
           value={content}
@@ -39,6 +52,7 @@ export default function DiaryEditor() {
         ></textarea>
       </div>
       <div>
+        <span>오늘의 감정점수 : </span>
         <select name='emotion' value={emotion} onChange={handleChangeState}>
           <option value={1}>1</option>
           <option value={2}>2</option>
