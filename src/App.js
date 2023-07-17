@@ -19,10 +19,16 @@ function App() {
     dataId.current++;
     setData([newItem, ...data]);
   };
+
+  const onDelete = (id) => {
+    const newDiaryList = data.filter((list) => list.id !== id);
+    setData(newDiaryList);
+  };
+
   return (
     <div>
       <DiaryEditor onCreate={onCreate} />
-      <DiaryList diaryList={data} />
+      <DiaryList diaryList={data} onDelete={onDelete} />
     </div>
   );
 }
