@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 
-export default function DiaryItem({
+function DiaryItem({
   id,
   author,
   content,
@@ -73,3 +73,5 @@ export default function DiaryItem({
     </div>
   );
 }
+
+export default React.memo(DiaryItem);

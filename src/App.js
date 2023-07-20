@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import './App.css';
 import DiaryEditor from './components/DiaryEditor';
 import DiaryList from './components/DiaryList';
@@ -29,7 +29,7 @@ function App() {
     getData();
   }, []);
 
-  const onCreate = (author, content, emotion) => {
+  const onCreate = useCallback((author, content, emotion) => {
     const created_date = new Date().getTime();
     const newItem = {
       id: dataId.current,
@@ -39,25 +39,22 @@ function App() {
       created_date,
     };
     dataId.current++;
-    setData([newItem, ...data]);
-  };
+    setData((data) => [newItem, ...data]);
+  }, []);
 
-  const onRemove = (id) => {
-    const newDiaryList = data.filter((list) => list.id !== id);
-    setData(newDiaryList);
-  };
+  const onRemove = useCallback((id) => {
+    setData((data) => data.filter((list) => list.id !== id));
+  }, []);
 
-  const onEdit = (id, newContent) => {
-    setData(
+  const onEdit = useCallback((id, newContent) => {
+    setData((data) =>
       data.map((item) =>
         item.id === id ? { ...item, content: newContent } : item
       )
     );
-  };
+  }, []);
 
   const getDiaryAnalsis = useMemo(() => {
-    console.log('일기 분석 시작');
-
     const goodCount = data.filter((item) => item.emotion >= 3).length;
     const badCount = data.length - goodCount;
     const goodRatio = (goodCount / data.length) * 100;
