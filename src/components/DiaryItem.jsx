@@ -1,14 +1,8 @@
-import React, { useRef, useState } from 'react';
+import React, { useContext, useRef, useState } from 'react';
+import { DiaryDispatchContext } from '../App';
 
-function DiaryItem({
-  id,
-  author,
-  content,
-  emotion,
-  created_date,
-  onRemove,
-  onEdit,
-}) {
+function DiaryItem({ id, author, content, emotion, created_date }) {
+  const { onEdit, onRemove } = useContext(DiaryDispatchContext);
   const [isEdit, setIsEdit] = useState(false);
   const [text, setText] = useState(content);
   const textInput = useRef();
